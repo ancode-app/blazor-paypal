@@ -1,0 +1,70 @@
+﻿@page "/"
+@namespace blazor_paypal.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>blazor-paypal</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="blazor-paypal.styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
+
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.server.js"></script>
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AYZs-UcvaJb4y8VnNVIde-SlO5tiWNuFxDCzt22taQQRURSUxYmJtJUqegDaWqb-XuiO88H0KrVRAeug&components=buttons&currency=BRL"></script>
+    <script>
+        window.init = (dotNetHelper, valor) => {
+
+            // Render the PayPal button into #paypal-button-container
+            paypal.Buttons({
+
+                // Set up the transaction
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: valor,
+                            }
+                        }]
+                    });
+                },
+
+                // Finalize the transaction
+                onApprove: function (data, actions) {
+                    
+                    return actions.order.capture().then(function (orderData) {
+                        // Successful capture! For demo purposes:
+                        //console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                        var transaction = orderData.purchase_units[0].payments.captures[0];
+
+                        return dotNetHelper.invokeMethodAsync('GetHelloMessage', JSON.stringify(orderData, null, 2));
+                    });
+                }
+            }).render('#paypal-button-container');
+        }
+    </script>
+</body>
+
+</html>

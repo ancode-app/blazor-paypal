@@ -1,0 +1,32 @@
+@page "/"
+
+<h4>PayPal button</h4>
+<div class="w-50">
+    <div class="card">
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4 d-flex">
+                        <img src="/img/ps5.webp" class="img-thumbnail" alt="ps5" width="120" height="120">
+                    </div>
+                    <div class="col-8 m-auto">
+                        <div class="card-title">
+                            <a>Console Sony Playstation 5 - Ps5</a>
+                            <p>R$ 6.899</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                @if (!aprovado)
+                {
+                    <div id="paypal-button-container" style="display: block; margin: 0 auto;"></div>
+                }
+                else
+                {
+                    <img src="/img/ok.jpg" width="100" height="100" alt="ok">
+                }
+            </div>
+        </div>
+    </div>
+</div>
