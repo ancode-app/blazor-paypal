@@ -24,11 +24,9 @@ namespace blazor_paypal.Pages
             aprovado = false;
         }
 
-        [JSInvokable("GetHelloMessage")]
-        public void OnAprove(string value)
+        [JSInvokable("onApprove")]
+        public void OnAprove()
         {
-            PayPal paypal = JsonSerializer.Deserialize<PayPal>(value);
-            System.Console.WriteLine("Email do pagador = " + paypal.Payer.EmailAddress);
             aprovado = true;
             StateHasChanged();
         }

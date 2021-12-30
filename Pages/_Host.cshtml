@@ -31,40 +31,33 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
-    <script src="_framework/blazor.server.js"></script>
     <script
-        src="https://www.paypal.com/sdk/js?client-id=AYZs-UcvaJb4y8VnNVIde-SlO5tiWNuFxDCzt22taQQRURSUxYmJtJUqegDaWqb-XuiO88H0KrVRAeug&components=buttons&currency=BRL"></script>
+        src="https://www.paypal.com/sdk/js?client-id=AYZs-UcvaJb4y8VnNVIde-SlO5tiWNuFxDCzt22taQQRURSUxYmJtJUqegDaWqb-XuiO88H0KrVRAeug&currency=BRL&vault=true&intent=subscription"></script>
     <script>
         window.init = (dotNetHelper, valor) => {
 
             // Render the PayPal button into #paypal-button-container
             paypal.Buttons({
-
-                // Set up the transaction
-                createOrder: function (data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                value: valor,
-                            }
-                        }]
+                style: {
+                    shape: 'rect',
+                    color: 'gold',
+                    layout: 'vertical',
+                    label: 'subscribe'
+                },
+                createSubscription: function (data, actions) {
+                    return actions.subscription.create({
+                        /* Creates the subscription */
+                        plan_id: 'P-35152529WY655692PMHG2XTQ'
                     });
                 },
-
                 // Finalize the transaction
                 onApprove: function (data, actions) {
-                    
-                    return actions.order.capture().then(function (orderData) {
-                        // Successful capture! For demo purposes:
-                        //console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-                        var transaction = orderData.purchase_units[0].payments.captures[0];
-
-                        return dotNetHelper.invokeMethodAsync('GetHelloMessage', JSON.stringify(orderData, null, 2));
-                    });
+                    return dotNetHelper.invokeMethodAsync('onApprove');
                 }
             }).render('#paypal-button-container');
         }
     </script>
+    <script src="_framework/blazor.server.js"></script>
 </body>
 
 </html>
