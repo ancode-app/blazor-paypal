@@ -1,12 +1,12 @@
 @page "/"
 
 <h4>PayPal button</h4>
-<div class="w-25 centerCard" style="align-items: center;">
+<div class="w-25 centerCard">
     <div class="card">
         <div class="row">
             <div class="col-12">
                 <div class="card border-0">
-                    <img src="/img/spotify.png" class="img-thumbnail border-0" alt="ps5">
+                    <img src="/img/spotify.png" class="img-thumbnail border-0" alt="spotify">
                     <div class="card-body">
                         <h5 class="card-title">Spotify Premium</h5>
                         <p class="card-text">Individual
@@ -22,7 +22,9 @@
             <div class="container">
                 @if (!aprovado)
                 {
-                    <div id="paypal-button-container" class="shadow"></div>
+                    <div class="container-fluid mb-2">
+                        <div id="paypal-button-container" class="shadow"></div>
+                    </div>
                 }
                 else
                 {
@@ -32,3 +34,31 @@
         </div>
     </div>
 </div>
+@if (sub.OrderID != null)
+{
+    <div class="w-25 centerCard" style="align-items: center;">
+        <div class="card-title">
+            <h5>Dados da assinatura</h5>
+        </div>
+        <div class="card-body">
+            <strong>OrderID: </strong>@sub.OrderID<br>
+            <strong>SubscriptionID: </strong>@sub.SubscriptionID<br>
+            <button type="button" class="btn btn-primary mb2"
+            @onclick="(() => GetInfoAsync(sub.SubscriptionID))">Informações da assinatura</button>
+            @if (rootSub.Id != null)
+            {
+                <br>
+                <strong>Status: </strong>@rootSub.Status<br>
+                <strong>StartTime: </strong>@rootSub.StartTime<br>
+                <strong>CreateTime: </strong>@rootSub.CreateTime<br>
+                <button type="button" class="btn btn-danger mb2"
+            @onclick="(() => CancelarAsync(sub.SubscriptionID))">Cancelar Assinatura</button>
+
+            }
+
+
+        </div>
+
+    </div>
+
+}

@@ -4,6 +4,18 @@ using System.Text.Json.Serialization;
 
 namespace blazor_paypal.Model
 {
+    public class SubscriptionData
+    {
+        [JsonPropertyName("orderID")]
+        public string OrderID { get; set; }
+
+        [JsonPropertyName("subscriptionID")]
+        public string SubscriptionID { get; set; }
+
+        [JsonPropertyName("facilitatorAccessToken")]
+        public string FacilitatorAccessToken { get; set; }
+    }
+    
     public class PayPal
     {
         [JsonPropertyName("id")]
