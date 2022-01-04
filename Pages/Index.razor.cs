@@ -1,11 +1,9 @@
 using System.Text.Json;
 using System.Threading.Tasks;
-
 using blazor_paypal.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using blazor_paypal.Data;
-using Newtonsoft.Json;
 
 namespace blazor_paypal.Pages
 {
@@ -27,17 +25,15 @@ namespace blazor_paypal.Pages
             RootSubscriber r = new RootSubscriber();
 
             r = await Paypal.GetAssinatura(id);
-
-            System.Console.WriteLine("metodo CencelaAsync " + r.Status);
-
             rootSub = r;
+            
             StateHasChanged();
         }
 
         public async Task CancelarAsync(string id)
         {
-            System.Console.WriteLine("CancelarAsync");
             await Paypal.CancelarAssinatura(id);
+            await Paypal.GetAssinatura(id);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -53,7 +49,7 @@ namespace blazor_paypal.Pages
         [JSInvokable("onApprove")]
         public void OnAprove(string data)
         {
-            sub = JsonConvert.DeserializeObject<SubscriptionData>(data);
+            sub = JsonSerializer.Deserialize<SubscriptionData>(data);
             System.Console.WriteLine(sub.OrderID);
             aprovado = true;
             StateHasChanged();
